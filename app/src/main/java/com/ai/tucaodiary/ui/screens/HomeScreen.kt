@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import sp
 import com.ai.tucaodiary.ui.theme.*
 import com.ai.tucaodiary.viewmodel.AuthViewModel
 import com.ai.tucaodiary.viewmodel.HomeViewModel
@@ -39,11 +40,11 @@ fun HomeScreen(
                     Text(authVm.user?.username ?: "", style = MaterialTheme.typography.titleMedium, color = Orange)
                     if (authVm.isAdmin) {
                         Spacer(Modifier.width(6.dp))
-                        Surface(shape = RoundedCornerShape(8.dp), color = Pink) { Text("管理", Modifier.padding(horizontal = 8.dp, vertical = 2.dp), style = MaterialTheme.typography.labelLarge.copy(fontSize = androidx.compose.ui.unit.sp(10)), color = androidx.compose.ui.graphics.Color.White) }
+                        Surface(shape = RoundedCornerShape(8.dp), color = Pink) { Text("管理", Modifier.padding(horizontal = 8.dp, vertical = 2.dp), style = MaterialTheme.typography.labelLarge.copy(fontSize = sp(10)), color = androidx.compose.ui.graphics.Color.White) }
                     }
                     if (authVm.isVip) {
                         Spacer(Modifier.width(4.dp))
-                        Surface(shape = RoundedCornerShape(8.dp), color = Cyan) { Text("VIP", Modifier.padding(horizontal = 8.dp, vertical = 2.dp), style = MaterialTheme.typography.labelLarge.copy(fontSize = androidx.compose.ui.unit.sp(10)), color = androidx.compose.ui.graphics.Color.White) }
+                        Surface(shape = RoundedCornerShape(8.dp), color = Cyan) { Text("VIP", Modifier.padding(horizontal = 8.dp, vertical = 2.dp), style = MaterialTheme.typography.labelLarge.copy(fontSize = sp(10)), color = androidx.compose.ui.graphics.Color.White) }
                     }
                 }
                 if (authVm.isVip && authVm.vipExpire > 0) {

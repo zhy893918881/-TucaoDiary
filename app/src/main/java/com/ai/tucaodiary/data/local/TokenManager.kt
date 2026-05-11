@@ -22,8 +22,8 @@ object TokenManager {
         get() = prefs.getLong("vipExpire", 0L)
         set(v) = prefs.edit().putLong("vipExpire", v).apply()
     var balance: Double
-        get() = prefs.getDouble("balance", 0.0)
-        set(v) = prefs.edit().putDouble("balance", v).apply()
+        get() = prefs.getString("balance", "0")?.toDoubleOrNull() ?: 0.0
+        set(v) = prefs.edit().putString("balance", v.toString()).apply()
     fun clear() { prefs.edit().clear().apply() }
     fun saveUser(u: com.ai.tucaodiary.data.remote.UserInfo) {
         username = u.username; role = u.role

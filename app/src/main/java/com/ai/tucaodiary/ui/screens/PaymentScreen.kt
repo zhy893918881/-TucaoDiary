@@ -58,7 +58,7 @@ fun PaymentScreen(vm: PaymentViewModel, onBack: () -> Unit) {
                                 plan.tag?.let {
                                     Spacer(Modifier.width(8.dp))
                                     Surface(color = tagColor.copy(alpha = 0.15f), shape = RoundedCornerShape(6.dp)) {
-                                        Text(it, Modifier.padding(horizontal = 8.dp, vertical = 2.dp), color = tagColor, style = MaterialTheme.typography.labelLarge.copy(fontSize = androidx.compose.ui.unit.sp(11)))
+                                        Text(it, Modifier.padding(horizontal = 8.dp, vertical = 2.dp), color = tagColor, style = MaterialTheme.typography.labelLarge.copy(fontSize = sp(11)))
                                     }
                                 }
                             }
@@ -136,6 +136,12 @@ fun PaymentScreen(vm: PaymentViewModel, onBack: () -> Unit) {
 
                     Spacer(Modifier.height(8.dp))
                     TextButton({ vm.showQrDialog = false }) { Text("取消", color = TextSub) }
+                }
+            }
+        }
+    }
+}
+extSub) }
                 }
             }
         }
