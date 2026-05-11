@@ -12,7 +12,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
-        vectorDrawables { useSupportLibrary = true }
     }
     buildTypes {
         release {
@@ -26,12 +25,12 @@ android {
     }
     kotlinOptions { jvmTarget = "17" }
     buildFeatures { compose = true }
-    composeOptions { kotlinCompilerExtensionVersion = "1.5.5" }
-    packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
+    composeOptions { kotlinCompilerExtensionVersion = "1.5.8" }
 }
 
 dependencies {
-    implementation(platform("androidx.compose:compose-bom:2024.01.00"))
+    val composeBom = platform("androidx.compose:compose-bom:2024.01.00")
+    implementation(composeBom)
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
