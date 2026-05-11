@@ -31,8 +31,8 @@ fun NavGraph() {
     }
 
     NavHost(nav, startDestination = start) {
-        composable("login") { LoginScreen(authVm, onRegister = { nav.navigate("register") }) }
-        composable("register") { RegisterScreen(authVm, onLogin = { nav.popBackStack() }) }
+        composable("login") { LoginScreen(authVm, onRegister = { nav.navigate("register") }, onSuccess = { nav.navigate("home") { popUpTo("login") { inclusive = true } } }) }
+        composable("register") { RegisterScreen(authVm, onLogin = { nav.popBackStack() }, onSuccess = { nav.navigate("home") { popUpTo("login") { inclusive = true } } }) }
         composable("home") { HomeScreen(authVm, homeVm, onAdmin = { nav.navigate("admin") }, onPayment = { nav.navigate("payment") }) }
         composable("payment") { PaymentScreen(paymentVm, onBack = { nav.popBackStack() }) }
         composable("admin") { AdminScreen(adminVm, onBack = { nav.popBackStack() }) }

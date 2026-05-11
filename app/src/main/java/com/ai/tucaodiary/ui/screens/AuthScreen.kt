@@ -20,10 +20,14 @@ import com.ai.tucaodiary.ui.theme.TextSub
 import com.ai.tucaodiary.viewmodel.AuthViewModel
 
 @Composable
-fun LoginScreen(vm: AuthViewModel, onRegister: () -> Unit) {
+fun LoginScreen(vm: AuthViewModel, onRegister: () -> Unit, onSuccess: () -> Unit = {}) {
     var user by remember { mutableStateOf("") }
     var pass by remember { mutableStateOf("") }
     var showPass by remember { mutableStateOf(false) }
+
+    LaunchedEffect(vm.isLoggedIn) {
+        if (vm.isLoggedIn) onSuccess()
+    }
 
     Column(Modifier.fillMaxSize().padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Text("🔥 吐槽日记", style = MaterialTheme.typography.headlineLarge, color = Orange)
@@ -60,9 +64,13 @@ fun LoginScreen(vm: AuthViewModel, onRegister: () -> Unit) {
 }
 
 @Composable
-fun RegisterScreen(vm: AuthViewModel, onLogin: () -> Unit) {
+fun RegisterScreen(vm: AuthViewModel, onLogin: () -> Unit, onSuccess: () -> Unit = {}) {
     var user by remember { mutableStateOf("") }
     var pass by remember { mutableStateOf("") }
+
+    LaunchedEffect(vm.isLoggedIn) {
+        if (vm.isLoggedIn) onSuccess()
+    }
 
     Column(Modifier.fillMaxSize().padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Text("🔐 注册", style = MaterialTheme.typography.headlineLarge, color = Orange)

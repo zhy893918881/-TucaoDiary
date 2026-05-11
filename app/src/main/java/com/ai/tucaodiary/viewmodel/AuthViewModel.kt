@@ -49,44 +49,69 @@ class AuthViewModel : ViewModel() {
     }
 
     fun login(username: String, password: String) {
+        if (username.isBlank() || password.isBlank()) { error = "请输入用户名和密码"; return }
         isLoading = true; error = ""
         viewModelScope.launch {
             try {
                 val r = RetrofitClient.api.login(LoginRequest(username, password))
                 if (r.isSuccessful) {
-                    r.body()?.let {
-                        token = it.token; user = it.user
-                        TokenManager.token = it.token; TokenManager.saveUser(it.user)
-                        RetrofitClient.token = it.token
-                        isVip = it.user.isVip; balance = it.user.balance
-                        isLoggedIn = true
-                        loadConfig()
+                    val resp = r.body()
+                    if (resp == null || resp.user == null) {
+                        error = "登录失败：服务器返回数据异常"
+                        isLoading = false
+                        return@launch
                     }
+                    token = resp.token; user = resp.user
+                    TokenManager.token = resp.token; TokenManager.saveUser(resp.user)
+                    RetrofitClient.token = resp.token
+                    isVip = resp.user.isVip; vipExpire = resp.user.vipExpire; balance = resp.user.balance
+                    isLoggedIn = true
+                    loadConfig()
                 } else {
-                    error = try { com.google.gson.Gson().fromJson(r.errorBody()?.string(), Map::class.java)["error"] as? String ?: "" } catch (_: Exception) { "登录失败" }
+                    val msg = try { 
+                        val errBody = r.errorBody()?.string()
+                        com.google.gson.Gson().fromJson(errBody, Map::class.java)["error"] as? String
+                    } catch (_: Exception) { null }
+                    error = msg ?: "登录失败 (${r.code()})"
                 }
-            } catch (_: Exception) { error = "网络错误，请检查连接" }
+            } catch (e: Exception) { 
+                error = "网络错误，请检查连接"
+                android.util.Log.e("AuthVM", "login failed", e)
+            }
             isLoading = false
         }
     }
 
     fun register(username: String, password: String) {
+        if (username.length < 2) { error = "用户名至少2位"; return }
+        if (password.length < 4) { error = "密码至少4位"; return }
         isLoading = true; error = ""
         viewModelScope.launch {
             try {
                 val r = RetrofitClient.api.register(RegisterRequest(username, password))
                 if (r.isSuccessful) {
-                    r.body()?.let {
-                        token = it.token; user = it.user
-                        TokenManager.token = it.token; TokenManager.saveUser(it.user)
-                        RetrofitClient.token = it.token
-                        isVip = it.user.isVip; balance = it.user.balance
-                        isLoggedIn = true
+                    val resp = r.body()
+                    if (resp == null || resp.user == null) {
+                        error = "注册失败：服务器返回数据异常"
+                        isLoading = false
+                        return@launch
                     }
+                    token = resp.token; user = resp.user
+                    TokenManager.token = resp.token; TokenManager.saveUser(resp.user)
+                    RetrofitClient.token = resp.token
+                    isVip = resp.user.isVip; vipExpire = resp.user.vipExpire; balance = resp.user.balance
+                    isLoggedIn = true
                 } else {
-                    error = try { com.google.gson.Gson().fromJson(r.errorBody()?.string(), Map::class.java)["error"] as? String ?: "" } catch (_: Exception) { "注册失败" }
+                    val msg = try { 
+                        val errBody = r.errorBody()?.string()
+                        com.google.gson.Gson().fromJson(errBody, Map::class.java)["error"] as? String
+                    } catch (_: Exception) { null }
+                    error = msg ?: "注册失败 (${r.code()})"
                 }
-            } catch (_: Exception) { error = "网络错误，请检查连接" }
+            } catch (e: Exception) { 
+                error = "网络错误，请检查连接"
+                android.util.Log.e("AuthVM", "register failed", e)
+            }
             isLoading = false
         }
     }
