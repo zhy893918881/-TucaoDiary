@@ -15,6 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
@@ -26,17 +27,13 @@ fun PaymentScreen(vm: PaymentViewModel, onBack: () -> Unit) {
     LaunchedEffect(Unit) { vm.loadPlans() }
 
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-        // 顶部
         Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onBack) { Icon(Icons.Filled.ArrowBack, "返回", tint = TextSub) }
             Text("💎 充值会员", style = MaterialTheme.typography.headlineMedium, color = Orange)
         }
-
         Text("选择套餐，获取无限吐槽！", Modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.bodyMedium)
-
         Spacer(Modifier.height(16.dp))
 
-        // 套餐列表
         Column(Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             vm.plans.forEach { plan ->
                 val tagColor = when {
@@ -58,7 +55,7 @@ fun PaymentScreen(vm: PaymentViewModel, onBack: () -> Unit) {
                                 plan.tag?.let {
                                     Spacer(Modifier.width(8.dp))
                                     Surface(color = tagColor.copy(alpha = 0.15f), shape = RoundedCornerShape(6.dp)) {
-                                        Text(it, Modifier.padding(horizontal = 8.dp, vertical = 2.dp), color = tagColor, style = MaterialTheme.typography.labelLarge.copy(fontSize = sp(11)))
+                                        Text(it, Modifier.padding(horizontal = 8.dp, vertical = 2.dp), color = tagColor, style = MaterialTheme.typography.labelLarge.copy(fontSize = 11.sp))
                                     }
                                 }
                             }
@@ -66,7 +63,7 @@ fun PaymentScreen(vm: PaymentViewModel, onBack: () -> Unit) {
                             Text(plan.desc, style = MaterialTheme.typography.bodyMedium)
                         }
                         Column(horizontalAlignment = Alignment.End) {
-                            Text("¥${plan.price}", style = MaterialTheme.typography.headlineMedium.copy(fontSize = androidx.compose.ui.unit.sp(24)), color = Orange, fontWeight = FontWeight.Bold)
+                            Text("¥${plan.price}", style = MaterialTheme.typography.headlineMedium.copy(fontSize = 24.sp), color = Orange, fontWeight = FontWeight.Bold)
                             Text("${plan.vipDays}天", style = MaterialTheme.typography.bodyMedium)
                         }
                     }
@@ -74,7 +71,6 @@ fun PaymentScreen(vm: PaymentViewModel, onBack: () -> Unit) {
             }
         }
 
-        // 错误/成功
         if (vm.error.isNotBlank()) {
             Spacer(Modifier.height(8.dp))
             Surface(Modifier.padding(horizontal = 16.dp).fillMaxWidth(), color = Pink.copy(alpha = 0.1f), shape = RoundedCornerShape(12.dp)) {
@@ -87,27 +83,21 @@ fun PaymentScreen(vm: PaymentViewModel, onBack: () -> Unit) {
                 Text("🎉 ${vm.paySuccess}", Modifier.padding(12.dp), color = Cyan, fontWeight = FontWeight.Bold)
             }
         }
-
         Spacer(Modifier.height(32.dp))
     }
 
-    // 付款弹窗
     if (vm.showQrDialog && vm.selectedPlan != null) {
         Dialog(onDismissRequest = { vm.showQrDialog = false }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
             Surface(Modifier.fillMaxWidth(0.9f).fillMaxHeight(0.75f), shape = RoundedCornerShape(20.dp), color = CardBg) {
                 Column(Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("扫码支付", style = MaterialTheme.typography.headlineMedium, color = Orange)
                     Text("${vm.selectedPlan!!.name} · ¥${vm.selectedPlan!!.price}", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 8.dp))
-
                     Spacer(Modifier.height(16.dp))
 
                     if (vm.qrCode.isNotBlank()) {
-                        AsyncImage(
-                            model = vm.qrCode,
-                            contentDescription = "收款码",
+                        AsyncImage(model = vm.qrCode, contentDescription = "收款码",
                             modifier = Modifier.fillMaxWidth().aspectRatio(1f).clip(RoundedCornerShape(12.dp)).border(BorderStroke(2.dp, Orange), RoundedCornerShape(12.dp)),
-                            contentScale = ContentScale.Fit
-                        )
+                            contentScale = ContentScale.Fit)
                     } else {
                         Surface(Modifier.fillMaxWidth().aspectRatio(1f), shape = RoundedCornerShape(12.dp), color = CardBg, border = BorderStroke(2.dp, CardStroke)) {
                             Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -120,7 +110,6 @@ fun PaymentScreen(vm: PaymentViewModel, onBack: () -> Unit) {
 
                     Spacer(Modifier.height(12.dp))
                     Text("请使用微信/支付宝扫码支付 ¥${vm.selectedPlan!!.price}", style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
-
                     Spacer(Modifier.height(20.dp))
 
                     Button(
@@ -136,12 +125,6 @@ fun PaymentScreen(vm: PaymentViewModel, onBack: () -> Unit) {
 
                     Spacer(Modifier.height(8.dp))
                     TextButton({ vm.showQrDialog = false }) { Text("取消", color = TextSub) }
-                }
-            }
-        }
-    }
-}
-extSub) }
                 }
             }
         }
