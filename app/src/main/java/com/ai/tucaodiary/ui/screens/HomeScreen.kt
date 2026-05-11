@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import sp
+import androidx.compose.ui.unit.sp
 import com.ai.tucaodiary.ui.theme.*
 import com.ai.tucaodiary.viewmodel.AuthViewModel
 import com.ai.tucaodiary.viewmodel.HomeViewModel
